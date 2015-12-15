@@ -15,7 +15,6 @@
 #define BLUE 2
 #define SQUARE(x) pow(x, 2)
 
-double pow(double x, double y);
 
 /*
  * Function to calculate the gradients across the array, requires the base
@@ -69,7 +68,7 @@ gradientData * calcGradientMeans(gradientData * data) {
  * value.
  */
 gradientData * calcStandardDeviation(gradientData * data) {
-  long stdDev = 0;
+  double variance = 0;
   if (!strcmp(data->type, "RGBA")) {
     // array traversal pointer.
     void * traversal = data->baseArr;
@@ -83,18 +82,19 @@ gradientData * calcStandardDeviation(gradientData * data) {
       memcpy(eastNeighbor, traversal + 1, 1);
       memcpy(southNeighbor, traversal + data->width, 1);
       //add eastern gradient
-      stdDev += SQUARE((+(curr[RED] - eastNeighbor[RED])) +
+      variance += SQUARE((+(curr[RED] - eastNeighbor[RED])) +
               (+(curr[GREEN] - eastNeighbor[GREEN])) +
               (+(curr[BLUE] - eastNeighbor[BLUE]))- data->mean) /
               ((data->width - 1) * (data->height - 1));
       //add southern gradient
-      stdDev += SQUARE((+(curr[RED] - southNeighbor[RED])) +
+      variance += SQUARE((+(curr[RED] - southNeighbor[RED])) +
               (+(curr[GREEN] - southNeighbor[GREEN])) +
               (+(curr[BLUE] - southNeighbor[BLUE])) - data->mean) /
               ((data->width - 1) * (data->height - 1));
       traversal++;
       counter++;
     }
+    data->stdDev = sqrt(variance);
   }
   return data;
-  }
+}
