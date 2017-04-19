@@ -4,6 +4,7 @@
  * Purpose: This file contains the gradient calculation code, which creates
  * a resulting edge array, as well as calculates the standard Deviation and
  * mean gradients.
+ * .
  */
 
 #include "edgeInfo.h"
